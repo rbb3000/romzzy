@@ -30,10 +30,7 @@ var server = new WebpackDevServer(
     https: false,
     hot: true,
     liveReload: false,
-    client: {
-      webSocketTransport: 'sockjs',
-    },
-    webSocketServer: 'sockjs',
+
     host: 'localhost',
     port: env.PORT,
     static: {
