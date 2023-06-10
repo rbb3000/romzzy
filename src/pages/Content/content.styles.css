@@ -5,13 +5,23 @@
   height: 100%;
   background-color: #ffffff33;
   position: absolute;
-  z-index: 1000;
-  backdrop-filter: blur(15px);
+  z-index: 500;
+  backdrop-filter: blur(20px);
   padding: 24px;
 }
 
+.row-icon {
+  width: 24px;
+  object-fit: contain;
+}
+
+.bike-icon {
+  width: 40px;
+  object-fit: contain;
+}
+
 .dash-icon {
-  margin: 48px;
+  margin: 0px 48px 0px 48px;
 }
 
 @keyframes myAnimation {
@@ -30,7 +40,7 @@
   height: 100%;
   background: #ffffff;
   position: absolute;
-  z-index: 2000;
+  z-index: 501;
   animation-name: myAnimation;
   animation-duration: 1s;
   animation-delay: 2s;
@@ -50,4 +60,17 @@
 
 .companion-logo {
   cursor: 'pointer';
+}
+
+.bike-div {
+  padding: 0px 16px 0px 0px;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    rgba(109, 103, 220, 0.26) 0%,
+    rgba(47, 186, 255, 0.209) 100%
+  );
+  width: 100%;
+  height: 98px;
+  border-radius: 20px;
 }

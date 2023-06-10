@@ -16,6 +16,15 @@ const ewzCompanionLogo =
 const dashIcon =
   'https://drive.google.com/uc?export=download&id=1XcgdPtpXgVqpvYhiKkxGktW4C2EsFYI-';
 
+const phoneIcon =
+  'https://drive.google.com/uc?export=download&id=1l2i-CLYjfu-mgXZREN1-rMVzJJGUzuQS';
+
+const cashIcon =
+  'https://drive.google.com/uc?export=download&id=18fIUe66_znESFsil5aOvF8xDmq0jMzyQ';
+
+const bikeIcon =
+  'https://drive.google.com/uc?export=download&id=1mUb43Iqa970Cscrbus0fjx5n-1NuA-d9';
+
 export const injectInfo = () => {
   console.log('running script');
 
@@ -57,7 +66,35 @@ export const injectInfo = () => {
 
       const energyUsage = matchingProduct['Energie (kWh/Jahr)'];
 
-      const rows = [{ id: 'cost', icon: boltIcon, text: `` }];
+      const rows = [
+        {
+          id: 'energyUsage',
+          icon: cashIcon,
+          text: `${energyUsage} KWh cost you ${(
+            (energyUsage * 24.67) /
+            100
+          ).toFixed(2)} CHF per year.`,
+        },
+        {
+          id: 'comparison',
+          icon: boltIcon,
+          text: `We found a product that uses ${Math.round(
+            ((energyUsage - bestEnergyUsage) / energyUsage) * 100
+          )}% less energy. See here.`,
+        },
+        {
+          id: 'phone',
+          icon: phoneIcon,
+          text: `Equals charging your smartphone ${Math.round(
+            energyUsage / 0.015 / 365
+          ).toFixed(0)} times per day`,
+        },
+        {
+          id: 'greyEnergy',
+          icon: plantIcon,
+          text: `The grey energy to produce and deliver this product is estimated at 3000 kWh`,
+        },
+      ];
 
       const img = document.createElement('img');
       img.width = 200;
@@ -79,55 +116,50 @@ export const injectInfo = () => {
         div.className = 'div-overlay';
         product.insertBefore(div, product.childNodes[2]);
 
-        const p = document.createElement('p');
-        p.className = 'div-text';
-        p.textContent = `${matchingProduct['Energie (kWh/Jahr)']} KWh / Jahr`;
-        div.appendChild(p);
-
         const dash = document.createElement('img');
         dash.className = 'dash-icon';
         dash.src = dashIcon;
         dash.width = 200;
         div.appendChild(dash);
 
-        const price = document.createElement('p');
-        price.className = 'div-text';
-        price.textContent = `${Math.round(
-          (matchingProduct['Energie (kWh/Jahr)'] * 24.67) / 100
-        )} CHF / Jahr`;
-        div.appendChild(price);
+        rows.forEach((row) => {
+          console.log('row appended');
 
-        const comparisonRow = document.createElement('div');
-        comparisonRow.className = 'div-row';
-        div.appendChild(comparisonRow);
+          const rowWrap = document.createElement('div');
+          rowWrap.className = 'div-row';
+          div.appendChild(rowWrap);
 
-        const comparisonIcon = document.createElement('img');
-        comparisonIcon.src = boltIcon;
-        comparisonRow.appendChild(comparisonIcon);
+          const icon = document.createElement('img');
+          icon.src = row.icon;
+          icon.className = 'row-icon';
+          rowWrap.appendChild(icon);
 
-        const comparison = document.createElement('p');
-        comparison.className = 'div-text';
-        comparison.textContent = `We found a product that uses ${Math.round(
-          ((matchingProduct['Energie (kWh/Jahr)'] - bestEnergyUsage) /
-            matchingProduct['Energie (kWh/Jahr)']) *
-            100
-        )}% less energy.`;
-        comparisonRow.appendChild(comparison);
+          const text = document.createElement('p');
+          text.className = 'div-text';
+          text.textContent = row.text;
+          rowWrap.appendChild(text);
+        });
+        const bikeDiv = document.createElement('div');
+        bikeDiv.className = 'bike-div';
+        div.appendChild(bikeDiv);
 
-        const velo = document.createElement('p');
-        velo.className = 'div-text';
-        const perHour = 0.15;
-        velo.textContent = `To power this device for a single hour you would need to sweat ${(
-          matchingProduct['Energie (kWh/Jahr)'] /
+        const rowWrap = document.createElement('div');
+        rowWrap.className = 'div-row';
+        bikeDiv.appendChild(rowWrap);
+
+        const icon = document.createElement('img');
+        icon.src = bikeIcon;
+        icon.className = 'bike-icon';
+        rowWrap.appendChild(icon);
+
+        const text = document.createElement('p');
+        text.className = 'div-text';
+        text.textContent = `To power this device for a day you would have to sweat ${(
+          energyUsage /
           365 /
-          perHour
-        ).toFixed(2)} hours on the hometrainer.`;
-        div.appendChild(velo);
-
-        const greyEnergy = document.createElement('p');
-        greyEnergy.className = 'div-text';
-        greyEnergy.textContent = `The grey energy to produce and deliver this product is estimated at 3000 KWh`;
-        div.appendChild(greyEnergy);
+          0.15
+        ).toFixed(1)} hours on the hometrainer.`;
+        rowWrap.appendChild(text);
       };
     });
   }
